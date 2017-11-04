@@ -1,0 +1,179 @@
+<html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Title/Favicon -->
+    <title>Capital One Summit</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
+    <!-- Mobile/Misc -->
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- BootStrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Parallax Script -->
+    <script src="/static/scripts/parallax.min.js"></script>
+    <!-- Personal CSS -->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles.css')}}">
+    <!-- Misc CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto" rel="stylesheet">
+    <!-- SocketIo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('connect', function() {
+            socket.emit('connected', {});
+        });
+        socket.on('message', function(data) {
+            console.log(data['message']);
+        });
+        socket.on('disconnect', function() {
+            console.log("disconnected from socket for some reason.");
+        });
+    </script>
+</head>
+
+<body>
+
+  <!-- Landing Parallax Image -->
+  <div class="landing" data-parallax="scroll" data-image-src="/static/images/SanFrancisco.jpg" natural-height="1431" natural-width="3000" bleed="10">
+    <!-- Center Caption -->
+    <div class="caption" id="landing-caption" style="display:none;margin-top:30px;">
+      <span class="border">Explore San Francisco</span>
+      <div class="arrow bounce">
+      <a class="fa fa-arrow-down fa-2x" href="#"></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Section -->
+  <div class="airbnb">
+    <h2 style="text-align:center;font-family:'Lato', sans-serif;">Educate Yourself</h2>
+    <p><i>Use our tools to learn more about the diverse opportunity in San Fransico!</i></p>
+
+    <!-- Container with 3x equal columns -->
+    <div class="container">
+      <div class="row">
+        <!-- First column -->
+        <a href="#graph" class="smooth-goto"><div class="col-xs-4 tile">
+          <img src="static/images/graph.png" class="img-rounded" alt="clipart" height="60px" width="60px"> 
+          <br> 
+          <b>Graphs:</b>
+          <p class="smallprint"> Info you'll want to know! </p>
+        </div></a>
+        <!-- Second column -->
+        <div class="col-xs-4 tile">
+          <img src="static/images/dollarsign.png" class="img-rounded" alt="clipart" height="60px" width="60px">
+          <br> 
+          <b>Price Estimate:</b>
+          <p class="smallprint"> Predict the future! </p>
+        </div>
+        <!-- Third column -->
+        <div class="col-xs-4 tile">
+          <img src="static/images/magnifyingglass.png" class="img-rounded" alt="clipart" height="55px" width="55px"> 
+          <br> 
+          <b>Booking Optimization:</b>
+          <p class="smallprint"> Optimize your results! </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- City image with fade in quote 
+  <div class="diverse" data-parallax="scroll" data-image-src="/static/images/diverse.jpg" natural-height="3456" natural-width="5184" bleed="10">
+      <div class="caption hideme" style="opacity: 0;">
+        <span class="border" style="background-color:rgba(0,0,0,0.6);font-size:20px;color:white;display:inline-block">
+          <blockquote><h3>THERE ARE A THOUSAND VIEWPOINTS IN THE VIEWTIFUL CITY ~ Herb Caenr</h3></blockquote>
+        </span>
+      </div>
+  </div>
+  -->
+
+  <!-- Parallax image of AirBnb office -->
+  <div class="airbnbsf" style="text-align:center;" data-parallax="scroll" data-image-src="/static/images/airbnbsf.jpg" natural-height="1352" natural-width="2048" bleed="10">
+    <!-- Image as center caption -->
+    <div class="caption hideme" style="opacity:0">
+      <img src="static/images/airbnb.png" class="img-responsive"> 
+    </div>
+  </div>
+  
+  <!-- Parallax image with graphs inside -->
+  <div class="sfcity" data-parallax="scroll" data-image-src="/static/images/sfcity.jpg" natural-height="1573" natural-width="2400" bleed="10">
+    <!-- Center caption is bootstrap well -->
+    <div class="caption" id="graph">
+      <!-- Bootstrap well with relative set height and width -->
+      <div class="well" style="height:90vh; min-width:60vw;">
+        <h1> Graphs </h1>
+          <!-- Carousel to scroll between objects (add new graphs to this) -->
+          <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+              <li data-target="#myCarousel" data-slide-to="1"></li>
+              <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+              <!-- Set Graph #1 -->
+              <div class="item active">
+                thing 1
+              </div>
+              <!-- Set Graph #2 -->
+              <div class="item">
+                thing 2
+              </div>
+              <!-- Set Graph #3 -->
+              <div class="item">
+                thing 3
+              </div>
+            </div>
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+          <br>
+          <p> Graph processing controls here </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $( document ).ready(function() {
+
+      /* Fade in landing page caption */
+      $("#landing-caption").delay(100).fadeIn(1500);
+
+      /* Fade in hidden object on scroll */
+      $(window).scroll( function(){
+          $('.hideme').each( function(i){
+              var bottom_of_object = $(this).offset().top + $(this).outerHeight();
+              var bottom_of_window = $(window).scrollTop() + $(window).height();
+              if( bottom_of_window > bottom_of_object ){
+                  $(this).animate({'opacity':'1'},1500);
+              }
+          }); 
+      });
+
+      /* Smoothly scroll to an element */
+      $('.smooth-goto').on('click', function() {  
+          $('html, body').animate({scrollTop: $(this.hash).offset().top}, 2500);
+          return false;
+      });
+
+    });
+
+  </script> 
+</body>
+</html>

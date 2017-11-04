@@ -1,0 +1,150 @@
+/* Global */
+
+body, html {
+    height: 100%;
+    font: 400 15px/1.8 "Lato", sans-serif;
+    color: #777;
+}
+
+a.fa {
+  color: white;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration:none; 
+  cursor:pointer;
+  color: inherit;
+}
+
+p {
+    font-size: 18px;
+}
+
+p.smallprint {
+  font-size: 15px;
+}
+
+b {
+  font-size: 18px;
+}
+
+.carousel-control.left, .carousel-control.right {
+    background-image: none
+}
+
+/* airbnb */
+
+.airbnb {
+    /*background-image: url("images/airbnb.png");
+    background-repeat: no-repeat;
+    background-position: right 50px top 30px;
+    background-size: 154.8px 50.4px;*/
+    text-align: center;
+    padding: 40px 50px;
+    text-align: center;
+    min-height: 50%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.tile {
+  transition: box-shadow .3s;
+  border-radius:10px;
+}
+
+.tile:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
+  cursor: pointer;
+}
+
+/* parralax */
+
+.landing {
+    position: relative;
+    min-height: 100%;
+    background: transparent;
+}
+
+.airbnbsf {
+    position: relative;
+    min-height: 50%;
+    background: transparent;
+}
+
+.sfcity {
+    position: relative;
+    min-height: 100%;
+    background: transparent;
+}
+
+.caption {
+  position: absolute;
+  text-align: center;
+  color: #000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.caption span.border {
+  background-color: #111;
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+
+/* Arrow Bounce - https://codepen.io/bisaillonyannick/pen/pvZeGg */
+
+.arrow {
+  text-align: center;
+  margin: 8% 0;
+}
+.bounce {
+  -webkit-animation: bounce 2s infinite;
+  animation: bounce 2s infinite;
+}
+
+@-webkit-keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+  }
+}
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-30px);
+            transform: translateY(-30px);
+  }
+  60% {
+    -webkit-transform: translateY(-15px);
+            transform: translateY(-15px);
+  }
+}
+
