@@ -55,6 +55,17 @@ def graphPie(column):
     with open('img.txt', 'w') as imgfile:
         imgfile.write(figdata_png.decode('utf8'))
 
+# Get average of reviews for each neighbourhood
+def averageReview(column):
+    ratingAverages = {}
+    data = pd.read_csv('formatted.csv')
+    neighbourhoods = ['Mission District', 'Western Addition/NOPA', 'SoMa', 'Richmond District', 'Bernal Heights', 'Noe Valley', 'The Castro', 'Nob Hill', 'Pacific Heights', 'Potrero Hill', 'Outer Sunset', 'Downtown', 'Haight-Ashbury', 'Lower Haight', 'Union Square', 'Marina', 'Inner Sunset', 'Duboce Triangle', 'South Beach', 'Chinatown', 'Tenderloin', 'Hayes Valley', 'Telegraph Hill', 'Russian Hill', 'Alamo Square', 'Excelsior', 'Cole Valley', 'Bayview', 'Twin Peaks', 'Sunnyside', 'Cow Hollow', 'Glen Park', 'North Beach', 'Parkside', 'Mission Terrace', 'Balboa Terrace', "Fisherman's Wharf", 'Crocker Amazon', 'Financial District', 'Oceanview', 'Ingleside', 'Dogpatch', 'Lakeshore', 'Presidio Heights', 'Portola', 'Civic Center', 'Visitacion Valley', 'Diamond Heights', 'Mission Bay', 'Forest Hill', 'West Portal', 'Japantown', 'Western Addition', 'Sea Cliff', 'Sunset District', 'Presidio', 'Soma', 'Fillmore District', 'Daly City']
+    for neighbourhood in neighbourhoods:
+        row_contains_neighbourhood = (data['neighbourhood'] == neighbourhood)
+        neighbourhood_rows = data[row_contains_neighbourhood]
+        average = neighbourhood_rows.review_scores_rating.astype(float).mean()
+        ratingAverages[neighbourhood] = average
+
 if __name__ == '__main__':
     while True:
         command = input("Write or Read? \n")
