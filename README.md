@@ -20,6 +20,16 @@ The requirements of the challenge were to
 
 I created this website using Flask as the backend. The site can reflect new data in real-time because there are no static calculations or values. To achieve this I am running processing functions (which can be time consuming) asynchronous using Celery, and sending the user data using websockets. The site is hosted on a AWS EC2 Instance with Gunicorn, Nginx, and LetsEncrypt for SSL. Gevent, Redis, and Supervisor were necessary to run Celery and Flask-SocketIo. My weakness is lack of experience with data structures and algorithms, this project was a good introduction to simple data processing. A lot of time was spent just learning the basics of Pandas (data processing tool), but as a result next time I'll be able to jump right into more complex functionality.
 
+## Key Files
+
+[Routes for Flask and Websockets (Views.py)](https://github.com/chadali/CapitalOneSummit/blob/master/app/views.py)
+
+[Celery Tasks (Tasks.py)](https://github.com/chadali/CapitalOneSummit/blob/master/app/tasks.py)
+
+[Messy Index.html](https://github.com/chadali/CapitalOneSummit/blob/master/app/templates/index.html)
+
+[CSV Formatting (Panda.py)](https://github.com/chadali/CapitalOneSummit/blob/master/app/csv/panda.py)
+
 ## Technology/Feature Breakdown
 
 [Pandas](#pandas)
@@ -109,8 +119,13 @@ https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-
 ### Resources
 
 Parallax.JS - http://pixelcog.github.io/parallax.js/
+
 Arrow Bounce - https://codepen.io/bisaillonyannick/pen/pvZeGg
+
 Bootstrap - http://getbootstrap.com/
+
 Flask-SocketIO - https://github.com/miguelgrinberg/Flask-SocketIO
+
 Pandas - http://pandas.pydata.org/
+
 Celery - http://www.celeryproject.org/

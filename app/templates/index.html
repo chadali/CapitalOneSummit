@@ -180,12 +180,12 @@
           <div class="col-xs-6">
             <h3> Price Estimation </h3>
             <hr>
-            <p> After calculating the average price of each neighbourhood (button below), the main difficulty is converting a long/lat value to a specific neighbourhood. If I had the time, I would try to create a "boundry" of houses that enclose a specific neighbourhood using the given data. Then, I could check if the inputted values are within any of the neighbourhood boundaries, if so I'd return the average price of that neighbourhood. If not, find the closest house to the given value and assume both houses are in the same neighbourhood.</p>
+            <p> After calculating the average price of each neighbourhood (button below), the main difficulty is converting a long/lat value to a specific neighbourhood. One way would be to use some sort of API that returns the street address of a long/lat value, and then convert that address to a neighbourhood value somehow. Once we have the neighbourhood though, we can simply return the average price of houses in that neighbourhood.</p>
           </div>
           <div class="col-xs-6">
             <h3> Price Optimization </h3>
             <hr>
-            <p> Similarly the hard work is converting a long/lat value to a neighbourhood. Once that's complete, to properly optimize I would calculate the average Square-Feet, bedrooms, baths, price of houses in that neighbourhood. Using that value, if a new house is above the average in the number of bedrooms and baths, I would return a value that's greater than the average price, and vice-versa. The key is that there's a huge amount of data (columns) which should ideally be looked at and computed.
+            <p> Similarly, the hard work is converting a long/lat value to a neighbourhood. Once that's complete, to properly optimize I would calculate the average Square-Feet, bedrooms, baths, price of houses in that neighbourhood. Using that value, if a new house is above the average in the number of bedrooms and baths, I would return a value that's greater than the average price, and vice-versa. The key is that there's a huge amount of data (columns) which should ideally be looked at and computed.
           </div>
         </div>
         <!-- Button -->
