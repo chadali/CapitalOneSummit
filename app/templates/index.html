@@ -27,15 +27,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
     <script type="text/javascript" charset="utf-8">
         var socket = io.connect('http://' + document.domain + ':' + location.port);
+        /* alert server that we connected */
         socket.on('connect', function() {
             socket.emit('connected', {});
         });
+        /* copy any message we received to console */
         socket.on('message', function(data) {
             console.log(data['message']);
         });
+        /* Graphs received in Base64 format are inserted into our carousel */
         socket.on('incoming-graph', function(data){
-          console.log(data['graphNumber']);
+          var picID = "inserted-graph-" + data['graphNumber'];
+          $("." + picID).html("");
+          $("." + picID).html("<img style='width:75%; margin:auto;' class='img-responsive' src='data:image/png;base64, " + data['img64'] + "'/>");
         });
+        /* After receiving a dictionary of price averages, we insert them into a table */
+        socket.on('priceAverages', function(data){
+          console.log(data['average']);
+          $("#priceTableBody").html("");
+          for(key in data['average']) {
+            $("#priceTableBody").append('<tr> <td>' + key + '</td> <td>' + data['average'][key] + ' </td> </tr>');
+          }
+        });
+        /* After receiving a dictionary of rating averages, we calculate the higest and insert into html */
+        socket.on('ratingAverages', function(data){
+          console.log(data['average']);
+          var highestRating = Object.keys(data['average']).reduce(function(a, b){ return data['average'][a] > data['average'][b] ? a : b });
+          console.log(highestRating);
+          $("#highestRating").html("");
+          $("#highestRating").html("<b>The highest rated neighbourhood is " + highestRating + " with a rating of " + data['average'][highestRating] + "</b>");
+        });
+        /* Alert to console if a disconnection occurs */
         socket.on('disconnect', function() {
             console.log("disconnected from socket for some reason.");
         });
@@ -45,7 +67,7 @@
 <body>
 
   <!-- Landing Parallax Image -->
-  <div class="landing" data-parallax="scroll" data-image-src="/static/images/SanFrancisco.jpg" natural-height="1431" natural-width="3000" bleed="10">
+  <div class="landing" data-parallax="scroll" data-image-src="/static/images/SanFrancisco-min.jpg" natural-height="1431" natural-width="3000" bleed="10">
     <!-- Center Caption -->
     <div class="caption" id="landing-caption" style="display:none;margin-top:30px;">
       <span class="border">Explore San Francisco</span>
@@ -58,68 +80,59 @@
   <!-- Navigation Section -->
   <div class="airbnb">
     <h2 style="text-align:center;font-family:'Lato', sans-serif;">Educate Yourself</h2>
-    <p><i>Use our tools to learn more about the diverse opportunity in San Fransico!</i></p>
+    <p><i>Use our tools to learn more about the diverse opportunity in San Francisco!</i></p>
 
     <!-- Container with 3x equal columns -->
     <div class="container">
       <div class="row">
         <!-- First column -->
         <a href="#graph" class="smooth-goto"><div class="col-xs-4 tile">
-          <img src="static/images/graph.png" class="img-rounded" alt="clipart" height="60px" width="60px"> 
+          <img src="static/images/graph-min.png" class="img-rounded" alt="clipart" height="60px" width="60px"> 
           <br> 
           <b>Graphs:</b>
           <p class="smallprint"> Info you'll want to know! </p>
         </div></a>
         <!-- Second column -->
-        <div class="col-xs-4 tile">
-          <img src="static/images/dollarsign.png" class="img-rounded" alt="clipart" height="60px" width="60px">
+        <a href="#price" class="smooth-goto"><div class="col-xs-4 tile">
+          <img src="static/images/dollarsign-min.png" class="img-rounded" alt="clipart" height="60px" width="60px">
           <br> 
           <b>Price Estimate:</b>
           <p class="smallprint"> Predict the future! </p>
-        </div>
+        </div></a>
         <!-- Third column -->
-        <div class="col-xs-4 tile">
-          <img src="static/images/magnifyingglass.png" class="img-rounded" alt="clipart" height="55px" width="55px"> 
+        <a href="#price" class="smooth-goto"><div class="col-xs-4 tile">
+          <img src="static/images/magnifyingglass-min.png" class="img-rounded" alt="clipart" height="55px" width="55px"> 
           <br> 
           <b>Booking Optimization:</b>
           <p class="smallprint"> Optimize your results! </p>
-        </div>
+        </div></a>
       </div>
     </div>
   </div>
 
-  <!-- City image with fade in quote 
-  <div class="diverse" data-parallax="scroll" data-image-src="/static/images/diverse.jpg" natural-height="3456" natural-width="5184" bleed="10">
-      <div class="caption hideme" style="opacity: 0;">
-        <span class="border" style="background-color:rgba(0,0,0,0.6);font-size:20px;color:white;display:inline-block">
-          <blockquote><h3>THERE ARE A THOUSAND VIEWPOINTS IN THE VIEWTIFUL CITY ~ Herb Caenr</h3></blockquote>
-        </span>
-      </div>
-  </div>
-  -->
 
   <!-- Parallax image of AirBnb office -->
-  <div class="airbnbsf" style="text-align:center;" data-parallax="scroll" data-image-src="/static/images/airbnbsf.jpg" natural-height="1352" natural-width="2048" bleed="10">
+  <div class="airbnbsf" style="text-align:center;" data-parallax="scroll" data-image-src="/static/images/airbnbsf-min.jpg" natural-height="1352" natural-width="2048" bleed="10">
     <!-- Image as center caption -->
     <div class="caption hideme" style="opacity:0">
-      <img src="static/images/airbnb.png" class="img-responsive"> 
+      <img src="static/images/airbnb-min.png" class="img-responsive"> 
     </div>
   </div>
   
   <!-- Parallax image with graphs inside -->
-  <div class="sfcity" data-parallax="scroll" data-image-src="/static/images/sfcity.jpg" natural-height="1573" natural-width="2400" bleed="10">
+  <div class="sfcity" data-parallax="scroll" data-image-src="/static/images/sfcity-min.jpg" natural-height="1573" natural-width="2400" bleed="10">
     <!-- Center caption is bootstrap well -->
     <div class="caption" id="graph">
       <!-- Bootstrap well with relative set height and width -->
       <div class="well" style="height:90vh; min-width:60vw;">
-        <h1 style="display:inline-block;margin-top:0px;"> Graphs </h1> <i style="display:inline-block;vertical-align: top;" class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="This form is sending paramaters to a celery worker to process the csv file in real time. Any processing the user wants can be applied and the relevant graph returned. Unfortunately just learning the basics took so much time, this was the max I could implement. The graphs are lame, and the pie graph is useless because it doesn't show every possible value. (I couldn't figure out how to format the plot for legible labels and values)"></i>
+        <h1 style="display:inline-block;margin-top:0px;"> Graphs </h1> <i style="display:inline-block;vertical-align: top;" class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="This form is sending paramaters to a celery worker to process the csv file in real time. Any processing the user wants can be applied and the relevant graph returned. Unfortunately I'm too busy to continue learning Panda's complexity to retrieve more relevant and interesting data."></i>
           <!-- Carousel to scroll between objects (add new graphs to this) -->
           <div id="myCarousel" class="carousel slide" data-ride="carousel">
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
               <!-- Set Graph #1 -->
               <div class="item active">
-                  <img  style="width:75%; margin:auto;" class="img-responsive" src="/static/images/top5neighbourhood.png"/>
+                  <img  style="width:75%; margin:auto;" class="img-responsive" src="/static/images/top5neighbourhood-min.png"/>
               </div>
             </div>
             <!-- Left and right controls -->
@@ -134,6 +147,7 @@
           </div>
           <br>
           <p> Graph the top 5 instances of any column, in real time! </p>
+          <!-- Form with a few columns available to choose from. Sent using JS -->
           <form class="form-inline" style="text-align:center; text-align-last:center;">
             <label style="margin-right:4px;">Select Column:</label>
             <select style="width:30vw;text-align:center;" class="form-control" id="columnSelect">
@@ -144,8 +158,79 @@
     </div>
   </div>
 
+
+  <!-- City image with fade in quote -->
+  <div class="quote" data-parallax="scroll" data-image-src="/static/images/bridge-min.jpg" natural-height="3456" natural-width="5184" bleed="10">
+      <div class="caption hideme" style="opacity: 0;">
+        <span class="border" style="background-color:rgba(0,0,0,0.6);font-size:20px;color:white;display:inline-block">
+          <blockquote><h3>THERE ARE A THOUSAND VIEWPOINTS IN THE VIEWTIFUL CITY ~ Herb Caenr</h3></blockquote>
+        </span>
+      </div>
+  </div>
+
+  <!-- Div that contains entire screen -->
+  <div id="price" style="min-height:100%;position:relative;">
+    <!-- Container limits width a bit -->
+    <div class="container">
+      <!-- Wells contains content -->
+      <div class="well" style="height:90vh;margin-top:10px;text-align:center;">
+        <h1> Price / Optimization </h1>
+        <hr>
+        <h3> Unfortunately due to school restrictions, I don't have time to complete price optimization, but I can give my thought process. <i>(BONUS bottom right of screen)</i> </h3>
+        <!-- Two columns of info -->
+        <div class="row">
+          <div class="col-xs-6">
+            <h3> Price Estimation </h3>
+            <hr>
+            <p> After calculating the average price of each neighbourhood (button below), the main difficulty is converting a long/lat value to a specific neighbourhood. If I had the time, I would try to create a "boundry" of houses that enclose a specific neighbourhood using the given data. Then, I could check if the inputted values are within any of the neighbourhood boundaries, if so I'd return the average price of that neighbourhood. If not, find the closest house to the given value and assume both houses are in the same neighbourhood.</p>
+          </div>
+          <div class="col-xs-6">
+            <h3> Price Optimization </h3>
+            <hr>
+            <p> Similarly the hard work is converting a long/lat value to a neighbourhood. Once that's complete, to properly optimize I would calculate the average Square-Feet, bedrooms, baths, price of houses in that neighbourhood. Using that value, if a new house is above the average in the number of bedrooms and baths, I would return a value that's greater than the average price, and vice-versa. The key is that there's a huge amount of data (columns) which should ideally be looked at and computed.
+          </div>
+        </div>
+        <!-- Button -->
+        <div class="row">
+          <div class="col-xs-12">
+            <button type="button" class="btn btn-secondary" id="averagePrice">Get Average Price</button>
+          </div>
+        </div>
+        <!-- Height limited table with overflow -->
+        <div id="averagePriceData" style="overflow:auto;height:250px;">
+          <table class="table table-condensed table-hover table-striped" style="overflow:auto;">
+            <thead>
+              <tr>
+                <th class="text-center"> Neighbourhood </th>
+                <th class="text-center"> Average Price ($) </th>
+              <tr>
+            </thead>
+            <tbody id="priceTableBody">
+            </tbody>
+        </div>
+      </div>
+    </div>
+    <!-- For some reason it's a good idea to hide the bonus button? Don't know a better place-->
+    <div style="position:absolute;right:5;bottom:5;">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">BONUS</button>
+    </div>
+  </div>
+
+  <!-- Modal that opens up once you click the bonus button -->
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <h1> Bonus </h1>
+        <hr>
+        <h3> The code to calculate average ratings is basically identical to average prices. Clicking the button below will return the neighbourhood with highest average ratings </h4>
+        <button type="button" class="btn btn-secondary" id="findHighestRating">Get Highest Average Rating</button>
+        <br> <br>
+        <span id="highestRating"></span>
+      </div>
+    </div>
+  </div>
+
   <script>
-    <!-- variable I later need -->
     var graphNumber = 1;
 
     $( document ).ready(function() {
@@ -177,22 +262,32 @@
       });
 
       /* Fill select with options */
-      var neighbourhoods = ['Mission District', 'Western Addition/NOPA', 'SoMa', 'Richmond District', 'Bernal Heights', 'Noe Valley', 'The Castro', 'Nob Hill', 'Pacific Heights', 'Potrero Hill', 'Outer Sunset', 'Downtown', 'Haight-Ashbury', 'Lower Haight', 'Union Square', 'Marina', 'Inner Sunset', 'Duboce Triangle', 'South Beach', 'Chinatown', 'Tenderloin', 'Hayes Valley', 'Telegraph Hill', 'Russian Hill', 'Alamo Square', 'Excelsior', 'Cole Valley', 'Bayview', 'Twin Peaks', 'Sunnyside', 'Cow Hollow', 'Glen Park', 'North Beach', 'Parkside', 'Mission Terrace', 'Balboa Terrace', "Fisherman's Wharf", 'Crocker Amazon', 'Financial District', 'Oceanview', 'Ingleside', 'Dogpatch', 'Lakeshore', 'Presidio Heights', 'Portola', 'Civic Center', 'Visitacion Valley', 'Diamond Heights', 'Mission Bay', 'Forest Hill', 'West Portal', 'Japantown', 'Western Addition', 'Sea Cliff', 'Sunset District', 'Presidio', 'Soma', 'Fillmore District', 'Daly City'];
+      var columns = ['neighbourhood', 'property_type', 'room_type',  'bathrooms', 'bedrooms', 'beds', 'price', 'cleaning_fee'];
 
-      for (var i in neighbourhoods) {
+      for (var i in columns) {
         var option = document.createElement("option");
-        option.text = neighbourhoods[i];
-        option.value = neighbourhoods[i];
+        option.text = columns[i];
+        option.value = columns[i];
         var select = document.getElementById("columnSelect");
         select.appendChild(option);
       }
 
       /* process graph on button click */
       $("#processGraph").click(function() {
-        $("<div class='item inserted-graph-" + graphNumber + "'><i class='fa fa-circle-o-notch fa-spin fa-3x fa-fw'></i></div>".)appendTo(".carousel-inner");
+        $("<div class='item inserted-graph-" + graphNumber + "'><i class='fa fa-circle-o-notch fa-spin fa-3x fa-fw'></i></div>").appendTo(".carousel-inner");
         $("#myCarousel").carousel('next');
-        socket.emit('processGraph', {"number":graphNumber,"neighbourhood":$("#columnSelect").val()});
+        socket.emit('processGraph', {"graphNumber":graphNumber,"column":$("#columnSelect").val()});
         graphNumber += 1;
+      })
+
+      /* retrieve average price on button click */
+      $("#averagePrice").click(function() {
+        socket.emit('averagePrice', {});
+      })
+
+      /* retrieve highest rating on button click */
+      $("#findHighestRating").click(function() {
+        socket.emit('highestRating', {});
       })
 
     });

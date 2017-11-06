@@ -82,6 +82,12 @@ b {
     background: transparent;
 }
 
+.quote {
+    position: relative;
+    min-height: 50%;
+    background: transparent; 
+}
+
 .caption {
   position: absolute;
   text-align: center;
@@ -90,6 +96,8 @@ b {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+
 
 .caption span.border {
   background-color: #111;
@@ -146,4 +154,13 @@ b {
     -webkit-transform: translateY(-15px);
             transform: translateY(-15px);
   }
+}
+
+/* price background div */
+#price {
+    background: grey; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(grey, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(grey, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(grey, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(grey, black); /* Standard syntax (must be last) */
 }

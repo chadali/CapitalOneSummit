@@ -77,3 +77,18 @@ Using websockets allows for a nice dynamic user experience because data can be s
 ## Celery
 
 Celery is Flask's option for running long asynchronous tasks. Let's me run any Python in the background, and then Websockets allow me to update a user's website data in realtime.
+
+## Server Setup
+
+### Commands
+
+``` 
+Sudo apt-get update
+Sudo apt-get upgrade
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+git clone git@github.com:chadali/CapitalOneSummit.git
+sudo apt-get install python3-venv
+python3 -m venv env
+sudo apt-get install python3-pip
+pip3 install -r requirements.txt
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04
