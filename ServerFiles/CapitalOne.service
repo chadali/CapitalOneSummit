@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve CapitalOneSummit
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/CapitalOneSummit
+Environment="PATH=/home/ubuntu/CapitalOneSummit/env/bin"
+ExecStart=/home/ubuntu/CapitalOneSummit/env/bin/gunicorn -k gevent --workers 1 --bind unix:CapitalOneSummit.sock -m 007 run:app
+
+[Install]
+WantedBy=multi-user.target

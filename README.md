@@ -95,8 +95,10 @@ sudo apt-get install build-essential python-dev python3-dev
 sudo apt-get install python3-tk
 https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04
 https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-16-04
-from gevent import monkey # add to __init__.py
-monkey.patch_all() # add to __init__.py 
+sudo apt-get install supervisor
+sudo mkdir /etc/log/celery
+sudo touch /var/log/celery/CapitalOne.log
+vim /etc/supervisor/conf.d/CapitalOne.conf
 
 
 ```
