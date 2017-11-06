@@ -91,4 +91,12 @@ sudo apt-get install python3-venv
 python3 -m venv env
 sudo apt-get install python3-pip
 pip3 install -r requirements.txt
+sudo apt-get install build-essential python-dev python3-dev
+sudo apt-get install python3-tk
 https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04
+https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-16-04
+from gevent import monkey # add to __init__.py
+monkey.patch_all() # add to __init__.py 
+
+
+```

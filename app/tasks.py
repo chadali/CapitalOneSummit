@@ -1,7 +1,6 @@
 from app import celery, SocketIO
 import time
 import pandas as pd
-import matplotlib.pyplot as plt, mpld3
 from io import BytesIO
 import base64, os
 
@@ -16,6 +15,8 @@ def test():
 @celery.task(soft_time_limit=10, time_limit=14)
 def plotGraph(column, graphNumber, sid):
     try:
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt, mpld3
         # Init SocketIO
         socketio = SocketIO(message_queue="redis://localhost:6379")
         # Open CSV
@@ -38,6 +39,8 @@ def plotGraph(column, graphNumber, sid):
 @celery.task(soft_time_limit=20, time_limit=22)
 def findAveragePrice(sid):
     try:
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt, mpld3
         # Init SocketIO
         socketio = SocketIO(message_queue="redis://localhost:6379")
         # init dictionary
@@ -60,6 +63,8 @@ def findAveragePrice(sid):
 @celery.task(soft_time_limit=20, time_limit=22)
 def findHighestRating(sid):
     try:
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt, mpld3
         # Init SocketIO
         socketio = SocketIO(message_queue="redis://localhost:6379")
         # init dictionary

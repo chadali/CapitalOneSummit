@@ -1,5 +1,5 @@
 import pandas as pd
-import matplotlib.pyplot as plt, mpld3
+import matplotlib
 from io import BytesIO
 import base64
 
@@ -19,6 +19,8 @@ def displayFile():
 
 # Puts the average price of each neighbourhood into a dictionary
 def averagePriceNeighbourhood():
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt, mpld3
     priceAverages = {}
     data = pd.read_csv('formatted.csv')
     neighbourhoods = ['Mission District', 'Western Addition/NOPA', 'SoMa', 'Richmond District', 'Bernal Heights', 'Noe Valley', 'The Castro', 'Nob Hill', 'Pacific Heights', 'Potrero Hill', 'Outer Sunset', 'Downtown', 'Haight-Ashbury', 'Lower Haight', 'Union Square', 'Marina', 'Inner Sunset', 'Duboce Triangle', 'South Beach', 'Chinatown', 'Tenderloin', 'Hayes Valley', 'Telegraph Hill', 'Russian Hill', 'Alamo Square', 'Excelsior', 'Cole Valley', 'Bayview', 'Twin Peaks', 'Sunnyside', 'Cow Hollow', 'Glen Park', 'North Beach', 'Parkside', 'Mission Terrace', 'Balboa Terrace', "Fisherman's Wharf", 'Crocker Amazon', 'Financial District', 'Oceanview', 'Ingleside', 'Dogpatch', 'Lakeshore', 'Presidio Heights', 'Portola', 'Civic Center', 'Visitacion Valley', 'Diamond Heights', 'Mission Bay', 'Forest Hill', 'West Portal', 'Japantown', 'Western Addition', 'Sea Cliff', 'Sunset District', 'Presidio', 'Soma', 'Fillmore District', 'Daly City']
@@ -31,6 +33,8 @@ def averagePriceNeighbourhood():
 
 # Creates a bar graph of the top 5 most common values of a csv column. Converts to base64 image for html.
 def graphBar(column):
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt, mpld3
     data = pd.read_csv("formatted.csv")
     plot = data[column].value_counts()[:5].plot(kind='bar')
     plt.tight_layout()
@@ -44,6 +48,8 @@ def graphBar(column):
 
 # Creates a pie graph to display the % of times each value occurres in a specified column. Base64 image.
 def graphPie(column):
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt, mpld3
     data = pd.read_csv("formatted.csv")
     plt.pie(data[column].value_counts()[:5], labels=data[column].value_counts()[:5].index)
     plt.tight_layout()
@@ -57,6 +63,8 @@ def graphPie(column):
 
 # Get average of reviews for each neighbourhood
 def averageReview(column):
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt, mpld3
     ratingAverages = {}
     data = pd.read_csv('formatted.csv')
     neighbourhoods = ['Mission District', 'Western Addition/NOPA', 'SoMa', 'Richmond District', 'Bernal Heights', 'Noe Valley', 'The Castro', 'Nob Hill', 'Pacific Heights', 'Potrero Hill', 'Outer Sunset', 'Downtown', 'Haight-Ashbury', 'Lower Haight', 'Union Square', 'Marina', 'Inner Sunset', 'Duboce Triangle', 'South Beach', 'Chinatown', 'Tenderloin', 'Hayes Valley', 'Telegraph Hill', 'Russian Hill', 'Alamo Square', 'Excelsior', 'Cole Valley', 'Bayview', 'Twin Peaks', 'Sunnyside', 'Cow Hollow', 'Glen Park', 'North Beach', 'Parkside', 'Mission Terrace', 'Balboa Terrace', "Fisherman's Wharf", 'Crocker Amazon', 'Financial District', 'Oceanview', 'Ingleside', 'Dogpatch', 'Lakeshore', 'Presidio Heights', 'Portola', 'Civic Center', 'Visitacion Valley', 'Diamond Heights', 'Mission Bay', 'Forest Hill', 'West Portal', 'Japantown', 'Western Addition', 'Sea Cliff', 'Sunset District', 'Presidio', 'Soma', 'Fillmore District', 'Daly City']
