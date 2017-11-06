@@ -2,8 +2,7 @@
 
 Website Submission for the Januray 2018 Capital One Summit
 
-Live at _____________
-
+Website live - [HERE](https://capitalonesummitsubmission.pw)
 
 ## Abstract
 
@@ -16,6 +15,10 @@ The requirements of the challenge were to
    * **Animate**: Add an animation to your visualization.
    * **Investment**: If I have $100 million to invest, where in San Francisco should I buy properties so I can maximize my returns with Airbnb? When will I break even?
    * **Popularity**: Can you identify the neighborhood that averages the most positive reviews?
+
+## Summary
+
+I created this website using Flask as the backend. The site can reflect new data in real-time because there are no static calculations or values. To achieve this I am running processing functions (which can be time consuming) asynchronous using Celery, and sending the user data using websockets. The site is hosted on a AWS EC2 Instance with Gunicorn, Nginx, and LetsEncrypt for SSL. Gevent, Redis, and Supervisor were necessary to run Celery and Flask-SocketIo. My weakness is lack of experience with data structures and algorithms, this project was a good introduction to simple data processing. A lot of time was spent just learning the basics of Pandas (data processing tool), but as a result next time I'll be able to jump right into more complex functionality.
 
 ## Technology/Feature Breakdown
 
@@ -68,7 +71,6 @@ full_section / small_section
 newFile = data[keep_col]
 newFile.to_csv('name.csv')
 ```
-    
 
 ## Flask-SocketIO
 
@@ -99,6 +101,16 @@ sudo apt-get install supervisor
 sudo mkdir /etc/log/celery
 sudo touch /var/log/celery/CapitalOne.log
 vim /etc/supervisor/conf.d/CapitalOne.conf
-
-
+sudo supervisorctl reread
+sudo supervisorctl update
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04
 ```
+
+### Resources
+
+Parallax.JS - http://pixelcog.github.io/parallax.js/
+Arrow Bounce - https://codepen.io/bisaillonyannick/pen/pvZeGg
+Bootstrap - http://getbootstrap.com/
+Flask-SocketIO - https://github.com/miguelgrinberg/Flask-SocketIO
+Pandas - http://pandas.pydata.org/
+Celery - http://www.celeryproject.org/

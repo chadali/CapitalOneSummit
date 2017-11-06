@@ -26,7 +26,7 @@
     <!-- SocketIo -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
     <script type="text/javascript" charset="utf-8">
-        var socket = io.connect('https://' + document.domain + ':' + location.port);
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
         /* alert server that we connected */
         socket.on('connect', function() {
             socket.emit('connected', {});
@@ -43,7 +43,7 @@
         });
         /* After receiving a dictionary of price averages, we insert them into a table */
         socket.on('priceAverages', function(data){
-          console.log(data['average']);
+          $("#priceLoadIcon").html("");
           $("#priceTableBody").html("");
           for(key in data['average']) {
             $("#priceTableBody").append('<tr> <td>' + key + '</td> <td>' + data['average'][key] + ' </td> </tr>');
@@ -51,9 +51,7 @@
         });
         /* After receiving a dictionary of rating averages, we calculate the higest and insert into html */
         socket.on('ratingAverages', function(data){
-          console.log(data['average']);
           var highestRating = Object.keys(data['average']).reduce(function(a, b){ return data['average'][a] > data['average'][b] ? a : b });
-          console.log(highestRating);
           $("#highestRating").html("");
           $("#highestRating").html("<b>The highest rated neighbourhood is " + highestRating + " with a rating of " + data['average'][highestRating] + "</b>");
         });
@@ -173,10 +171,10 @@
     <!-- Container limits width a bit -->
     <div class="container">
       <!-- Wells contains content -->
-      <div class="well" style="height:90vh;margin-top:10px;text-align:center;">
+      <div class="well" style="margin-top:10px;text-align:center;">
         <h1> Price / Optimization </h1>
         <hr>
-        <h3> Unfortunately due to school restrictions, I don't have time to complete price optimization, but I can give my thought process. <i>(BONUS bottom right of screen)</i> </h3>
+        <h3> Unfortunately due to school restrictions, I don't have time to complete price optimization, but I can give my thought process. <i>(BONUS very bottom right of page)</i> </h3>
         <!-- Two columns of info -->
         <div class="row">
           <div class="col-xs-6">
@@ -198,6 +196,7 @@
         </div>
         <!-- Height limited table with overflow -->
         <div id="averagePriceData" style="overflow:auto;height:250px;">
+          <span id="priceLoadIcon"></span>
           <table class="table table-condensed table-hover table-striped" style="overflow:auto;">
             <thead>
               <tr>
@@ -282,11 +281,13 @@
 
       /* retrieve average price on button click */
       $("#averagePrice").click(function() {
+        $("#priceLoadIcon").html("<i class='fa fa-circle-o-notch fa-spin fa-3x fa-fw'></i>");
         socket.emit('averagePrice', {});
       })
 
       /* retrieve highest rating on button click */
       $("#findHighestRating").click(function() {
+        $("#highestRating").html("<i class='fa fa-circle-o-notch fa-spin fa-3x fa-fw'></i>")
         socket.emit('highestRating', {});
       })
 
