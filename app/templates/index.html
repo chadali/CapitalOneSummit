@@ -33,6 +33,9 @@
         socket.on('message', function(data) {
             console.log(data['message']);
         });
+        socket.on('incoming-graph', function(data){
+          console.log(data['graphNumber']);
+        });
         socket.on('disconnect', function() {
             console.log("disconnected from socket for some reason.");
         });
@@ -109,28 +112,14 @@
     <div class="caption" id="graph">
       <!-- Bootstrap well with relative set height and width -->
       <div class="well" style="height:90vh; min-width:60vw;">
-        <h1> Graphs </h1>
+        <h1 style="display:inline-block;margin-top:0px;"> Graphs </h1> <i style="display:inline-block;vertical-align: top;" class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="This form is sending paramaters to a celery worker to process the csv file in real time. Any processing the user wants can be applied and the relevant graph returned. Unfortunately just learning the basics took so much time, this was the max I could implement. The graphs are lame, and the pie graph is useless because it doesn't show every possible value. (I couldn't figure out how to format the plot for legible labels and values)"></i>
           <!-- Carousel to scroll between objects (add new graphs to this) -->
           <div id="myCarousel" class="carousel slide" data-ride="carousel">
-            <!-- Indicators -->
-            <ol class="carousel-indicators">
-              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-              <li data-target="#myCarousel" data-slide-to="1"></li>
-              <li data-target="#myCarousel" data-slide-to="2"></li>
-            </ol>
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
               <!-- Set Graph #1 -->
               <div class="item active">
-                thing 1
-              </div>
-              <!-- Set Graph #2 -->
-              <div class="item">
-                thing 2
-              </div>
-              <!-- Set Graph #3 -->
-              <div class="item">
-                thing 3
+                  <img  style="width:75%; margin:auto;" class="img-responsive" src="/static/images/top5neighbourhood.png"/>
               </div>
             </div>
             <!-- Left and right controls -->
@@ -144,13 +133,28 @@
             </a>
           </div>
           <br>
-          <p> Graph processing controls here </p>
+          <p> Graph the top 5 instances of any column, in real time! </p>
+          <form class="form-inline" style="text-align:center; text-align-last:center;">
+            <label style="margin-right:4px;">Select Column:</label>
+            <select style="width:30vw;text-align:center;" class="form-control" id="columnSelect">
+            </select>
+            <button type="button" class="btn btn-secondary" id="processGraph">Process and Graph</button>
+          </form>
       </div>
     </div>
   </div>
 
   <script>
+    <!-- variable I later need -->
+    var graphNumber = 1;
+
     $( document ).ready(function() {
+
+      /* Stop Carousel Rotation */
+      $('.carousel').carousel('pause');
+
+      /* Tooltip */
+      $('[data-toggle="tooltip"]').tooltip();
 
       /* Fade in landing page caption */
       $("#landing-caption").delay(100).fadeIn(1500);
@@ -171,6 +175,25 @@
           $('html, body').animate({scrollTop: $(this.hash).offset().top}, 2500);
           return false;
       });
+
+      /* Fill select with options */
+      var neighbourhoods = ['Mission District', 'Western Addition/NOPA', 'SoMa', 'Richmond District', 'Bernal Heights', 'Noe Valley', 'The Castro', 'Nob Hill', 'Pacific Heights', 'Potrero Hill', 'Outer Sunset', 'Downtown', 'Haight-Ashbury', 'Lower Haight', 'Union Square', 'Marina', 'Inner Sunset', 'Duboce Triangle', 'South Beach', 'Chinatown', 'Tenderloin', 'Hayes Valley', 'Telegraph Hill', 'Russian Hill', 'Alamo Square', 'Excelsior', 'Cole Valley', 'Bayview', 'Twin Peaks', 'Sunnyside', 'Cow Hollow', 'Glen Park', 'North Beach', 'Parkside', 'Mission Terrace', 'Balboa Terrace', "Fisherman's Wharf", 'Crocker Amazon', 'Financial District', 'Oceanview', 'Ingleside', 'Dogpatch', 'Lakeshore', 'Presidio Heights', 'Portola', 'Civic Center', 'Visitacion Valley', 'Diamond Heights', 'Mission Bay', 'Forest Hill', 'West Portal', 'Japantown', 'Western Addition', 'Sea Cliff', 'Sunset District', 'Presidio', 'Soma', 'Fillmore District', 'Daly City'];
+
+      for (var i in neighbourhoods) {
+        var option = document.createElement("option");
+        option.text = neighbourhoods[i];
+        option.value = neighbourhoods[i];
+        var select = document.getElementById("columnSelect");
+        select.appendChild(option);
+      }
+
+      /* process graph on button click */
+      $("#processGraph").click(function() {
+        $("<div class='item inserted-graph-" + graphNumber + "'><i class='fa fa-circle-o-notch fa-spin fa-3x fa-fw'></i></div>".)appendTo(".carousel-inner");
+        $("#myCarousel").carousel('next');
+        socket.emit('processGraph', {"number":graphNumber,"neighbourhood":$("#columnSelect").val()});
+        graphNumber += 1;
+      })
 
     });
 

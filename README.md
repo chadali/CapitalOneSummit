@@ -27,29 +27,53 @@ The requirements of the challenge were to
 
 ## Pandas
 
-Pandas is a python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast. 
+Pandas is the python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast.
 
 ### Personal Notes:
 
 #### Importing CSV
 
-`data = pd.read_csv('xx.csv', nrows=10)
+`data = pd.read_csv('xx.csv', nrows=10)`
 
-#### Filtering Functions
+#### Filtering Methods
 
-* `data['column_name']`
-* `data['column1', 'column2']`
-* `data['column1'][:10]`
-* `.value_counts()`
+##### Columns
 
-#### Plotting (real time plotting on site??)
+* `data['column1']` - Isolate column1
 
+##### Rows
+*   ```is_true = data['column'] == "value" # Returns True/False
+    is_also_true = data['other_column'] == "value" # Returns True/False
+    data[is_true & is_also_true] # Returns a row if True inside
+    ```
 
+##### Functions
+* `data[:10]` - Get first 10 rows
+* `data['column'].value_counts()` - Get the number of instances of each value in a specific column
+
+##### Plotting
+* `data['column1'][:10].plot(kind='bar')` - Makes matplotlib which should be convertible to html
+
+##### Conversion
+`data['column'].value_count().astype(float)`
+
+##### Math
+```small_section = data[data['column'] == "value"].value_count()
+full_section = data['column'].value_count()
+full_section / small_section
+```
+
+#### Export CSV
+```keep_col = ['KeepThis1', 'KeepThis2']
+newFile = data[keep_col]
+newFile.to_csv('name.csv')
+```
+    
 
 ## Flask-SocketIO
 
-Easy to implement websockets for Flask. Allows for a interactivity. In my use-case I can send data from asynchrous tasks directly to the user.
+Using websockets allows for a nice dynamic user experience because data can be sent in real-time to the user's html. A better replacement for AJAX, it's a requirement in my use case for sending data from asynchronous tasks to HTML.
 
 ## Celery
 
-Asynchrous tasks for long running functions. We can allow the user to do custom processing of CSV data with Celery.
+Celery is Flask's option for running long asynchronous tasks. Let's me run any Python in the background, and then Websockets allow me to update a user's website data in realtime.
