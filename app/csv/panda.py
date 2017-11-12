@@ -2,6 +2,9 @@ import pandas as pd
 import matplotlib
 from io import BytesIO
 import base64
+import geopy.distance
+
+## Testing Panda Function before placing inside tasks.py ##
 
 # Remove unwanted columns from original csv file. I kept only the most consistent columns and those that could make good graphs.
 def removeColumns():
@@ -73,6 +76,51 @@ def averageReview(column):
         neighbourhood_rows = data[row_contains_neighbourhood]
         average = neighbourhood_rows.review_scores_rating.astype(float).mean()
         ratingAverages[neighbourhood] = average
+
+# Return average lat/lng position of each neighbourhood
+def averageCoordinates():
+    coordinateAverages = {}
+    data = pd.read_csv('formatted.csv')
+    neighbourhoods = ['Mission District', 'Western Addition/NOPA', 'SoMa', 'Richmond District', 'Bernal Heights', 'Noe Valley', 'The Castro', 'Nob Hill', 'Pacific Heights', 'Potrero Hill', 'Outer Sunset', 'Downtown', 'Haight-Ashbury', 'Lower Haight', 'Union Square', 'Marina', 'Inner Sunset', 'Duboce Triangle', 'South Beach', 'Chinatown', 'Tenderloin', 'Hayes Valley', 'Telegraph Hill', 'Russian Hill', 'Alamo Square', 'Excelsior', 'Cole Valley', 'Bayview', 'Twin Peaks', 'Sunnyside', 'Cow Hollow', 'Glen Park', 'North Beach', 'Parkside', 'Mission Terrace', 'Balboa Terrace', "Fisherman's Wharf", 'Crocker Amazon', 'Financial District', 'Oceanview', 'Ingleside', 'Dogpatch', 'Lakeshore', 'Presidio Heights', 'Portola', 'Civic Center', 'Visitacion Valley', 'Diamond Heights', 'Mission Bay', 'Forest Hill', 'West Portal', 'Japantown', 'Western Addition', 'Sea Cliff', 'Sunset District', 'Presidio', 'Soma', 'Fillmore District', 'Daly City']
+    for neighbourhood in neighbourhoods:
+        row_contains_neighbourhood = (data['neighbourhood'] == neighbourhood)
+        neighbourhood_rows = data[row_contains_neighbourhood]
+        averageLat = neighbourhood_rows.latitude.astype(float).mean()
+        averageLon = neighbourhood_rows.longitude.astype(float).mean()
+        coordinateAverages[neighbourhood] = (averageLat, averageLon)
+    return coordinateAverages
+
+# Returns the absolute lowest and highest lat/lng positions. To help me draw maps boundary
+def getCoordinateBoundaries():
+    lowx = 200
+    highx = -200
+    lowy = 200
+    highy = -200
+    for x in coordinateAverages:
+        array = coordinateAverages[x]
+        if array[0] < lowx:
+            lowx = array[0]
+        if array[0] > highx:
+            highx = array[0]
+        if array[1] < lowy:
+            lowy = array[1]
+        if array[1] > highy:
+            highy = array[1]
+            
+    print("Low - [%s, %s], High - [%s, %s]" % (lowx,lowy,highx,highy))
+
+def findClosestNeighbourhood():
+    testPoint = (37.739515412875775, -122.43595722216799)
+    feetDistance = 100000
+    closestNeighbourhood = ''
+    averages = averageCoordinates()
+    for neighbourhood in averages:
+        neighbourhoodLocation = averages[neighbourhood]
+        distance = geopy.distance.vincenty(testPoint, neighbourhoodLocation).ft
+        if distance < feetDistance:
+            feetDistance = distance
+            closestNeighbourhood = neighbourhood
+
 
 if __name__ == '__main__':
     while True:

@@ -1,7 +1,7 @@
 from app import app, db, socketio
 from flask import Flask, redirect, url_for, session, request, jsonify, render_template
 from flask_socketio import emit, join_room, leave_room, disconnect
-from .tasks import test, plotGraph, findAveragePrice, findHighestRating
+from .tasks import test, plotGraph, findAveragePrice, findHighestRating, findNeighbourhood
 
 @app.route('/')
 def index():
@@ -31,3 +31,7 @@ def highestRating(data):
     emit('message', {'message': 'Sending task to celery for highest rating'})
     findHighestRating.apply_async(args=[request.sid])
 
+@socketio.on('getNeighbourhood')
+def getNeighbourhood(data):
+    coordinate = (data['location']['lat'], data['location']['lng'])
+    findNeighbourhood.apply_async(args=[coordinate, request.sid])

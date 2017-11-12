@@ -26,7 +26,7 @@
     <!-- SocketIo -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
     <script type="text/javascript" charset="utf-8">
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var socket = io.connect('https://' + document.domain + ':' + location.port);
         /* alert server that we connected */
         socket.on('connect', function() {
             socket.emit('connected', {});
@@ -54,6 +54,14 @@
           var highestRating = Object.keys(data['average']).reduce(function(a, b){ return data['average'][a] > data['average'][b] ? a : b });
           $("#highestRating").html("");
           $("#highestRating").html("<b>The highest rated neighbourhood is " + highestRating + " with a rating of " + data['average'][highestRating] + "</b>");
+        });
+        /* Upon receiving the closest neighbourhood, write to html */
+        socket.on('closestNeighbourhood', function(data){
+          $("#closestNeighbourhood").html(data['neighbourhood']);
+          weeklyPrice = data['averagePrice'] * 7;
+          $("#neighbourhoodPrice").html(weeklyPrice);
+          $("#averageRooms").html(data['rooms'].toFixed(2));
+          $("#averageBathrooms").html(data['bathrooms'].toFixed(2));
         });
         /* Alert to console if a disconnection occurs */
         socket.on('disconnect', function() {
@@ -174,38 +182,20 @@
       <div class="well" style="margin-top:10px;text-align:center;">
         <h1> Price / Optimization </h1>
         <hr>
-        <h3> Unfortunately due to school restrictions, I don't have time to complete price optimization, but I can give my thought process. <i>(BONUS very bottom right of page)</i> </h3>
-        <!-- Two columns of info -->
-        <div class="row">
-          <div class="col-xs-6">
-            <h3> Price Estimation </h3>
-            <hr>
-            <p> After calculating the average price of each neighbourhood (button below), the main difficulty is converting a long/lat value to a specific neighbourhood. One way would be to use some sort of API that returns the street address of a long/lat value, and then convert that address to a neighbourhood value somehow. Once we have the neighbourhood though, we can simply return the average price of houses in that neighbourhood.</p>
-          </div>
-          <div class="col-xs-6">
-            <h3> Price Optimization </h3>
-            <hr>
-            <p> Similarly, the hard work is converting a long/lat value to a neighbourhood. Once that's complete, to properly optimize I would calculate the average Square-Feet, bedrooms, baths, price of houses in that neighbourhood. Using that value, if a new house is above the average in the number of bedrooms and baths, I would return a value that's greater than the average price, and vice-versa. The key is that there's a huge amount of data (columns) which should ideally be looked at and computed.
-          </div>
-        </div>
+        <!-- Google Maps -->
+        <div id="map" style="height:400px; width:100%;"></div>
+        <br>
         <!-- Button -->
+        <h2>Marker located in: <span id="closestNeighbourhood">(Move Marker)</span></h2>
         <div class="row">
-          <div class="col-xs-12">
-            <button type="button" class="btn btn-secondary" id="averagePrice">Get Average Price</button>
+          <div class="col-xs-6">
+            <h2> Price Estimate </h2>
+            <p>The weekly average price of <span id="closestNeighbourhood"></span> is $<span id="neighbourhoodPrice"></span></p>
           </div>
-        </div>
-        <!-- Height limited table with overflow -->
-        <div id="averagePriceData" style="overflow:auto;height:250px;">
-          <span id="priceLoadIcon"></span>
-          <table class="table table-condensed table-hover table-striped" style="overflow:auto;">
-            <thead>
-              <tr>
-                <th class="text-center"> Neighbourhood </th>
-                <th class="text-center"> Average Price ($) </th>
-              <tr>
-            </thead>
-            <tbody id="priceTableBody">
-            </tbody>
+          <div class="col-xs-6">
+            <h2> Optimal Price </h2>
+            <p> This neighbourhood has an average number of <b><span id="averageRooms">0</span></b> and <b><span id="averageBathrooms">0</span></b> bathrooms.</p> <br> <p> Therefore, if your property has a greater than average number of rooms it should be listed at a price greater than the neighbourhood average.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -221,6 +211,20 @@
       <div class="modal-content">
         <h1> Bonus </h1>
         <hr>
+        <button type="button" class="btn btn-secondary" id="averagePrice">Get Average Price</button>
+        <!-- Height limited table with overflow -->
+        <div id="averagePriceData" style="overflow:auto;height:250px;">
+          <span id="priceLoadIcon"></span>
+          <table class="table table-condensed table-hover table-striped" style="overflow:auto;">
+            <thead>
+              <tr>
+                <th class="text-center"> Neighbourhood </th>
+                <th class="text-center"> Average Price ($) </th>
+              <tr>
+            </thead>
+            <tbody id="priceTableBody">
+            </tbody>
+        </div>
         <h3> The code to calculate average ratings is basically identical to average prices. Clicking the button below will return the neighbourhood with highest average ratings </h4>
         <button type="button" class="btn btn-secondary" id="findHighestRating">Get Highest Average Rating</button>
         <br> <br>
@@ -230,10 +234,7 @@
   </div>
 
   <script>
-    var graphNumber = 1;
-
     $( document ).ready(function() {
-
       /* Stop Carousel Rotation */
       $('.carousel').carousel('pause');
 
@@ -294,5 +295,93 @@
     });
 
   </script> 
+
+  <!-- Google Maps Code -->
+  <script>
+    var graphNumber = 1;
+    var marker;
+    var GLOBAL = {};
+
+    /* Google Maps Code*/
+    function initMap() {
+      var SanFrancisco = {lat: 37.751189, lng: -122.443167};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: SanFrancisco
+      });
+
+      marker = new google.maps.Marker({
+          map: map,
+          draggable: true,
+          animation: google.maps.Animation.DROP,
+          position: {lat: 37.751189, lng: -122.443167},
+          title: 'Drag Me!'
+      });
+
+      var infowindow = new google.maps.InfoWindow({
+        content: "<b>Drag me to desired location!</b>"
+      });
+
+      marker.addListener('dragstart', function(e) {
+        toggleBounce();
+        var markerOldPosition = this.getPosition();
+        GLOBAL.startDragPosition = markerOldPosition;
+        infowindow.close(map, marker);
+      });
+      
+      marker.addListener('dragend', function(e) {
+        toggleBounce();
+        if(google.maps.geometry.poly.containsLocation(e.latLng, boundary)) {
+          console.log("Point was inside boundary");
+          map.panTo(e.latLng);
+          infowindow = new google.maps.InfoWindow({
+            content: "<b>Position: </b>" + e.latLng
+          });
+          infowindow.open(map, marker);
+          GLOBAL.setPos = e.latLng;
+        } else {
+          marker.setPosition(GLOBAL.startDragPosition);
+          GLOBAL.setPos = GLOBAL.startDragPosition;
+          infowindow.open(map, marker);
+        }
+        $("#closestNeighbourhood").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
+        $("#neighbourhoodPrice").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
+        $("#averageRooms").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
+        $("#averageBathrooms").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
+        socket.emit('getNeighbourhood', {"location":GLOBAL.setPos.toJSON()});
+        delete GLOBAL.startDragPosition;
+      });
+
+      var boundaryCoordinates = [
+        {lat: 37.809609, lng: -122.520616}, // top left
+        {lat: 37.815743, lng: -122.355205}, // top right
+        {lat: 37.703669, lng: -122.354503}, // bot right
+        {lat: 37.694346, lng: -122.503128}, // bot left
+        {lat: 37.809609, lng: -122.520616} // top left
+      ];
+
+      var boundary = new google.maps.Polyline({
+        path: boundaryCoordinates,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: .5,
+        strokeWeight: 2
+      });
+
+      boundary.setMap(map);
+      infowindow.open(map, marker);
+
+    }
+
+    function toggleBounce() {
+      if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+      } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+      }
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfzQi_1mr0OT7jKo5HmdhVXncD6a9VmZg&callback=initMap"></script>
+
 </body>
 </html>

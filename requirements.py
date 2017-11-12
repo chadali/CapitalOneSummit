@@ -13,3 +13,4 @@ pandas
 supervisor
 gunicorn
 gevent
+geopy
