@@ -4,21 +4,28 @@ Website Submission for the Januray 2018 Capital One Summit
 
 Website live - [HERE](https://capitalonesummitsubmission.pw)
 
+## Summary
+
+This website was creating using Flask for the Jan 2018 Capital One Summit.
+
+Hosted on a AWS EC2 Instance with Gunicorn, Nginx, Redis, Gevent, Supervisor, and LetsEncrypt for SSL.
+
+Pandas (python library) was used to process CSV data. Real-time processing was achieved by using Celery to run Python code in the background and using websockets to update the HTML.
+
 ## Abstract
 
 The requirements of the challenge were to
 
 1. **Visualize the data**: Graph some (any 3) interesting metrics, maps, or trends from the dataset.
-2. **Price estimation**: Given the geo-location (latitude and longitude) of a new property, estimate the weekly average income the homeowner can make with Airbnb.
-3. **Bookings optimization**: Given the geo-location (latitude and longitude) of a property, what is the ideal price per night that will yield maximum bookings or revenue?
-4. **Optionally:**
+   * Pandas had a plotting feature I wanted to implement. I allowed the user to choose which column they wanted to process, then using Websockets and Celery, Base64 data of a MatLibPlot (processed data graphed) is returned to the browser to be displayed.
+2. **Price estimation / Optimization**: Given the geo-location (latitude and longitude) of a new property, estimate the weekly average income the homeowner can make with Airbnb. What is the ideal price per night that will yield maximum bookings or revenue?
+   * I implemented Google Maps to allow the user to choose the geo-location. I again use Celery to calculate which neighbourhood is closest to the specific marker using the GeoPy library. In addition, I process the average price and sizes of houses in that neighbourhood as data returned to the user.
+3. **Optionally:**
    * **Animate**: Add an animation to your visualization.
-   * **Investment**: If I have $100 million to invest, where in San Francisco should I buy properties so I can maximize my returns with Airbnb? When will I break even?
+     * Parallax, Bootstrap, JQuery
+   * ~~**Investment**: If I have $100 million to invest, where in San Francisco should I buy properties so I can maximize my returns with Airbnb? When will I break even?~~
    * **Popularity**: Can you identify the neighborhood that averages the most positive reviews?
-
-## Summary
-
-I created this website using Flask as the backend. The site can reflect new data in real-time because there are no static calculations or values. To achieve this I am running processing functions (which can be time consuming) asynchronous using Celery, and sending the user data using websockets. The site is hosted on a AWS EC2 Instance with Gunicorn, Nginx, and LetsEncrypt for SSL. Gevent, Redis, and Supervisor were necessary to run Celery and Flask-SocketIo. My weakness is lack of experience with data structures and algorithms, this project was a good introduction to simple data processing. A lot of time was spent just learning the basics of Pandas (data processing tool), but as a result next time I'll be able to jump right into more complex functionality.
+     * BONUS button at the very bottom right of webpage. This was a simple average calculation with Pandas.
 
 ## Key Files
 
@@ -26,9 +33,9 @@ I created this website using Flask as the backend. The site can reflect new data
 
 [Celery Tasks (Tasks.py)](https://github.com/chadali/CapitalOneSummit/blob/master/app/tasks.py)
 
-[Messy Index.html](https://github.com/chadali/CapitalOneSummit/blob/master/app/templates/index.html)
+[Index.html](https://github.com/chadali/CapitalOneSummit/blob/master/app/templates/index.html)
 
-[CSV Formatting (Panda.py)](https://github.com/chadali/CapitalOneSummit/blob/master/app/csv/panda.py)
+[Processing Testing (Panda.py)](https://github.com/chadali/CapitalOneSummit/blob/master/app/csv/panda.py)
 
 ## Technology/Feature Breakdown
 
@@ -129,3 +136,5 @@ Flask-SocketIO - https://github.com/miguelgrinberg/Flask-SocketIO
 Pandas - http://pandas.pydata.org/
 
 Celery - http://www.celeryproject.org/
+
+GeoPy - https://github.com/geopy/geopy

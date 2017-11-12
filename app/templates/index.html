@@ -194,13 +194,15 @@
         <!-- Google Maps -->
         <div id="map" style="height:400px; width:100%;"></div>
         <br>
-        <!-- Button -->
+        <!-- Price & Optimization -->
         <h2>Marker located in: <span id="closestNeighbourhood">(Move Marker)</span></h2>
         <div class="row">
+          <!-- Display Weekly Average Price -->
           <div class="col-xs-6">
             <h2> Price Estimate </h2>
             <p>The weekly average price of <span id="closestNeighbourhood"></span> is $<span id="neighbourhoodPrice"></span></p>
           </div>
+          <!-- Display Average Size of House-->
           <div class="col-xs-6">
             <h2> Optimal Price </h2>
             <p> This neighbourhood has an average number of <b><span id="averageRooms">0</span></b> and <b><span id="averageBathrooms">0</span></b> bathrooms.</p> <br> <p> Therefore, if your property has a greater than average number of rooms it should be listed at a price greater than the neighbourhood average.</p>
@@ -313,12 +315,16 @@
 
     /* Google Maps Code*/
     function initMap() {
+      /* starting marker location */
       var SanFrancisco = {lat: 37.751189, lng: -122.443167};
+
+      /* init map with set zoom and center */
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 12,
         center: SanFrancisco
       });
 
+      /* Create the global marker that will be used */
       marker = new google.maps.Marker({
           map: map,
           draggable: true,
@@ -327,10 +333,12 @@
           title: 'Drag Me!'
       });
 
+      /* starting info window */
       var infowindow = new google.maps.InfoWindow({
         content: "<b>Drag me to desired location!</b>"
       });
 
+      /* when user starts drag, store old location, start animation, and close info window */
       marker.addListener('dragstart', function(e) {
         toggleBounce();
         var markerOldPosition = this.getPosition();
@@ -338,6 +346,7 @@
         infowindow.close(map, marker);
       });
       
+      /* when user finished dragging, stop animation, check if it's within bounds, open info window */
       marker.addListener('dragend', function(e) {
         toggleBounce();
         if(google.maps.geometry.poly.containsLocation(e.latLng, boundary)) {
@@ -353,14 +362,17 @@
           GLOBAL.setPos = GLOBAL.startDragPosition;
           infowindow.open(map, marker);
         }
+        /* After dragging done, use loading circles to indicate processing starting*/
         $("#closestNeighbourhood").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
         $("#neighbourhoodPrice").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
         $("#averageRooms").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
         $("#averageBathrooms").html("<i class='fa fa-circle-o-notch fa-spin fa-1x fa-fw'></i>");
+        /* websocket request to start processing*/
         socket.emit('getNeighbourhood', {"location":GLOBAL.setPos.toJSON()});
         delete GLOBAL.startDragPosition;
       });
-
+  
+      /* Coordinates of boundary */
       var boundaryCoordinates = [
         {lat: 37.809609, lng: -122.520616}, // top left
         {lat: 37.815743, lng: -122.355205}, // top right
@@ -369,6 +381,7 @@
         {lat: 37.809609, lng: -122.520616} // top left
       ];
 
+      /* Bundary Object */
       var boundary = new google.maps.Polyline({
         path: boundaryCoordinates,
         geodesic: true,
@@ -377,11 +390,13 @@
         strokeWeight: 2
       });
 
+      /* display starting boundary and info window */
       boundary.setMap(map);
       infowindow.open(map, marker);
 
     }
 
+    /* Bounce animation */
     function toggleBounce() {
       if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
@@ -390,6 +405,7 @@
       }
     }
   </script>
+  <!-- import Google Maps API -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCfzQi_1mr0OT7jKo5HmdhVXncD6a9VmZg&callback=initMap"></script>
 
 </body>
