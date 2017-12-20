@@ -39,7 +39,7 @@ My submission fulfilled these requirements using the given CSV data files from A
 
 ## Pandas
 
-Pandas is the python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast. Personal documentation kept [here](http://chadali.com/libraries/libraries/).
+Pandas is the python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast. Personal documentation kept [here](http://chadali.com/Libraries/Libraries/).
 
 ## Flask-SocketIO
 
