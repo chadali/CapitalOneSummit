@@ -1,6 +1,6 @@
 # CapitalOneSummit
 
-Website Submission for the Januray 2018 Capital One Summit. [Visit here.](https://capitalonesummitsubmission.pw)
+Website Submission for the Januray 2018 Capital One Summit. [Visit here](https://capitalonesummitsubmission.pw).
 
 ## Summary
 
