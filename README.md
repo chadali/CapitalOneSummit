@@ -47,47 +47,7 @@ My submission fulfilled these requirements using the given CSV data files from A
 
 ## Pandas
 
-Pandas is the python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast.
-
-### Personal Notes:
-
-#### Importing CSV
-
-`data = pd.read_csv('xx.csv', nrows=10)`
-
-#### Filtering Methods
-
-##### Columns
-
-* `data['column1']` - Isolate column1
-
-##### Rows
-*   ```is_true = data['column'] == "value" # Returns True/False
-    is_also_true = data['other_column'] == "value" # Returns True/False
-    data[is_true & is_also_true] # Returns a row if True inside
-    ```
-
-##### Functions
-* `data[:10]` - Get first 10 rows
-* `data['column'].value_counts()` - Get the number of instances of each value in a specific column
-
-##### Plotting
-* `data['column1'][:10].plot(kind='bar')` - Makes matplotlib which should be convertible to html
-
-##### Conversion
-`data['column'].value_count().astype(float)`
-
-##### Math
-```small_section = data[data['column'] == "value"].value_count()
-full_section = data['column'].value_count()
-full_section / small_section
-```
-
-#### Export CSV
-```keep_col = ['KeepThis1', 'KeepThis2']
-newFile = data[keep_col]
-newFile.to_csv('name.csv')
-```
+Pandas is the python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast. Personal documentation kept [here](http://chadali.com/libraries/libraries/)
 
 ## Flask-SocketIO
 
@@ -101,27 +61,7 @@ Celery is Flask's option for running long asynchronous tasks. Let's me run any P
 
 ### Commands
 
-``` 
-Sudo apt-get update
-Sudo apt-get upgrade
-ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
-git clone git@github.com:chadali/CapitalOneSummit.git
-sudo apt-get install python3-venv
-python3 -m venv env
-sudo apt-get install python3-pip
-pip3 install -r requirements.txt
-sudo apt-get install build-essential python-dev python3-dev
-sudo apt-get install python3-tk
-https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04
-https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-16-04
-sudo apt-get install supervisor
-sudo mkdir /etc/log/celery
-sudo touch /var/log/celery/CapitalOne.log
-vim /etc/supervisor/conf.d/CapitalOne.conf
-sudo supervisorctl reread
-sudo supervisorctl update
-https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04
-```
+I wrote personal documentation of how I set the server up [here](http://chadali.com/server/server/). Combine with files located [here](https://github.com/chadali/CapitalOneSummit/tree/master/ServerFiles)
 
 ### Resources
 
