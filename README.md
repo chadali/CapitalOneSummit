@@ -14,7 +14,7 @@ Pandas (python library) was used to process CSV data. Real-time processing was a
 
 ## Abstract
 
-The requirements of the challenge were to
+My submission fulfilled these requirements using the given CSV data files from AirBnB
 
 1. **Visualize the data**: Graph some (any 3) interesting metrics, maps, or trends from the dataset.
    * Pandas had a plotting feature I wanted to implement. I allowed the user to choose which column they wanted to process, then using Websockets and Celery, Base64 data of a MatLibPlot (processed data graphed) is returned to the browser to be displayed.
