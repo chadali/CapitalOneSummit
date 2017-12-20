@@ -39,7 +39,7 @@ My submission fulfilled these requirements using the given CSV data files from A
 
 ## Pandas
 
-Pandas is the python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast. Personal documentation kept [here](http://chadali.com/libraries/libraries/)
+Pandas is the python tool that I used to process the huge CSV files. I barely touched it's full potential, but I tried my best to learn it fast. Personal documentation kept [here](http://chadali.com/libraries/libraries/).
 
 ## Flask-SocketIO
 
@@ -51,7 +51,7 @@ Celery is Flask's option for running long asynchronous tasks. Let's me run any P
 
 ## Server Setup
 
-I wrote personal documentation of how I set the server up [here](http://chadali.com/server/server/). Combine with files located [here](https://github.com/chadali/CapitalOneSummit/tree/master/ServerFiles)
+I wrote personal documentation of how I set the server up [here](http://chadali.com/server/server/). Combine with files located [here](https://github.com/chadali/CapitalOneSummit/tree/master/ServerFiles).
 
 ### Resources
 
