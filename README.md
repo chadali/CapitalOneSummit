@@ -57,8 +57,6 @@ Celery is Flask's option for running long asynchronous tasks. Let's me run any P
 
 ## Server Setup
 
-### Commands
-
 I wrote personal documentation of how I set the server up [here](http://chadali.com/server/server/). Combine with files located [here](https://github.com/chadali/CapitalOneSummit/tree/master/ServerFiles)
 
 ### Resources
@@ -76,3 +74,8 @@ Pandas - http://pandas.pydata.org/
 Celery - http://www.celeryproject.org/
 
 GeoPy - https://github.com/geopy/geopy
+
+![Landing](https://imgur.com/CZLq828)
+![Navigation](https://imgur.com/Er9IVIl)
+![Graph](https://imgur.com/78y64eb)
+![Google Map](https://imgur.com/uNR5lto)
