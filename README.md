@@ -35,13 +35,7 @@ My submission fulfilled these requirements using the given CSV data files from A
 
 [Processing Testing (Panda.py)](https://github.com/chadali/CapitalOneSummit/blob/master/app/csv/panda.py)
 
-## Technology/Feature Breakdown
-
-[Pandas](#pandas)
-
-[Flask-SocketIO](#flask-socketio)
-
-[Celery](#celery)
+## Technology Breakdown
 
 ## Pandas
 
@@ -75,7 +69,7 @@ Celery - http://www.celeryproject.org/
 
 GeoPy - https://github.com/geopy/geopy
 
-![Landing](https://imgur.com/CZLq828)
-![Navigation](https://imgur.com/Er9IVIl)
-![Graph](https://imgur.com/78y64eb)
-![Google Map](https://imgur.com/uNR5lto)
+![Landing](https://imgur.com/CZLq828.jpg)
+![Navigation](https://imgur.com/Er9IVIl.jpg)
+![Graph](https://imgur.com/78y64eb.jpg)
+![Google Map](https://i.imgur.com/uNR5lto.png)
